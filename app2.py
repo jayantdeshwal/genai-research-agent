@@ -72,6 +72,10 @@ if prompt := st.chat_input("What is the latest on Llama 3.1?"):
 
     tools = [search, arxiv, wiki]
 
+    # --- NEW FIX: EXPLICITLY BIND THE TOOLS TO THE LLM ---
+    # This tells the LLM "you are allowed to use these functions."
+    llm_with_tools = llm.bind_tools(tools)
+
     # --- 3. THIS IS THE MODERN PROMPT (A simple string!) ---
     # We are NOT using the old 'react-chat' prompt.
     # This just gives the agent a role. The "how-to-think"
@@ -80,7 +84,8 @@ if prompt := st.chat_input("What is the latest on Llama 3.1?"):
 
 
     search_agent = create_agent(
-        model=llm,
+        # --- 4. PASS THE *BOUND* LLM HERE ---
+        model=llm_with_tools,
         tools=tools,
         # --- 4. PASS THE SIMPLE PROMPT HERE ---
         system_prompt=system_prompt_string
@@ -112,4 +117,5 @@ if prompt := st.chat_input("What is the latest on Llama 3.1?"):
         if content:
             st.session_state.messages.append({"role": "assistant", "content": content})
             st.write(content)
+
 
