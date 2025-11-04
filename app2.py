@@ -49,7 +49,7 @@ st.sidebar.markdown("""
 
 if "messages" not in st.session_state:
     st.session_state["messages"] = [
-        {"role": "assistant", "content": "Hi, I'm a research agent. How can I help you?"}
+        {"role": "assistant", content": "Hi, I'm a research agent. How can I help you?"}
     ]
 for msg in st.session_state.messages:
     st.chat_message(msg["role"]).write(msg["content"])
@@ -80,7 +80,26 @@ if prompt := st.chat_input("What is the latest on Llama 3.1?"):
     # We are NOT using the old 'react-chat' prompt.
     # This just gives the agent a role. The "how-to-think"
     # is already built into the 'create_agent' function.
-    system_prompt_string = "You are a helpful research assistant. Use your tools to answer the user's question."
+    
+    # --- 3. NEW, MORE DETAILED PROMPT ---
+    # The small Llama 3.1 8B model needs very explicit instructions
+    # to understand that it must *synthesize* the tool's output
+    # into a final answer, not just output the tool call.
+    system_prompt_string = """You are a helpful and professional research assistant.
+Your job is to answer the user's question using the tools provided.
+
+You must follow these steps:
+1.  Analyze the user's latest question and the chat history.
+2.  Decide if a tool is needed. If the question is simple (like 'hello'), just chat.
+3.  If a tool is needed, call the *single best* tool (like `Search` or `Wikipedia`) to find the answer.
+4.  You will receive the output from that tool.
+5.  **This is the most important step:** You MUST synthesize this tool output into a final, human-readable, and comprehensive answer.
+
+**RULES:**
+- **NEVER** output the tool call (e.g., `<Search>{"query": "..."}</Search>`) as your final answer.
+- Always use the tool's *results* to write your final, plain-text answer.
+- If the tools don't provide a good answer, just say "I couldn't find any information on that."
+"""
 
 
     search_agent = create_agent(
@@ -117,5 +136,6 @@ if prompt := st.chat_input("What is the latest on Llama 3.1?"):
         if content:
             st.session_state.messages.append({"role": "assistant", "content": content})
             st.write(content)
+
 
 
