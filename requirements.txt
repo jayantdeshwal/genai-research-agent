@@ -1,0 +1,27 @@
+# --- CORE LANGCHAIN V1.0 PACKAGES ---
+# The core logic package
+langchain>=1.0.0
+# Core foundational components
+langchain-core>=1.0.0
+langchain-community==0.4.1
+
+# --- PROVIDER INTEGRATIONS (No longer 'community' for providers) ---
+langchain-openai>=1.0.0
+langchain-groq>=1.0.0
+langchain-huggingface>=0.0.3  # (Latest is fine, compatible with v1.0)
+
+# --- UTILITIES AND RAG COMPONENTS (Modern) ---
+chromadb
+faiss-cpu
+sentence-transformers
+pypdf
+arxiv
+wikipedia
+python-dotenv
+
+# --- FRONT-END/JUPYTER ---
+ipykernel
+streamlit
+langchainhub
+langchain_classic
+langchain-streamlit
