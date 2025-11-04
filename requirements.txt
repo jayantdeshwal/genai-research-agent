@@ -15,8 +15,6 @@ arxiv
 wikipedia
 lxml
 
-# --- Fix for duckduckgo-search ---
-# We need all three of these for it to work
-duckduckgo-search
-click
-requests
+# --- The CORRECT DuckDuckGo package ---
+# This is the package the error log is asking for
+ddgs
