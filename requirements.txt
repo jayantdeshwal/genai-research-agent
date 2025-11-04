@@ -1,11 +1,22 @@
+# --- Core App & UI ---
 streamlit
+python-dotenv
+
+# --- LangChain 1.0+ Core ---
+langchain
+langchain-core
 langchain-groq
 langchain-community
 langchain-classic
-langchain
+langchainhub
+
+# --- Tool-Specific Libraries ---
 arxiv
 wikipedia
-duckduckgo-search
-python-dotenv
 lxml
-duckduckgosearch
+
+# --- Fix for duckduckgo-search ---
+# We need all three of these for it to work
+duckduckgo-search
+click
+requests
